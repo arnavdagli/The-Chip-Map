@@ -1,0 +1,98 @@
+"use client";
+
+import { useState, useMemo, useEffect } from "react";
+import events from "@/data/events.json";
+import FilterBar from "./FilterBar";
+import TimelineNode from "./TimelineNode";
+import SidePanel from "./SidePanel";
+
+export default function Timeline() {
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [activeCountry, setActiveCountry] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  const filteredEvents = useMemo(() => {
+    return events
+      .filter((e) => !activeCategory || e.category === activeCategory)
+      .filter((e) => !activeCountry || e.country === activeCountry)
+      .sort((a, b) => a.year - b.year);
+  }, [activeCategory, activeCountry]);
+
+  // Close the panel if its event gets filtered out of the timeline
+  useEffect(() => {
+    if (
+      selectedEvent &&
+      !filteredEvents.some((e) => e.id === selectedEvent.id)
+    ) {
+      setSelectedEvent(null);
+    }
+  }, [filteredEvents, selectedEvent]);
+
+  return (
+    <div className="flex h-dvh max-w-[100vw] flex-col overflow-x-hidden overflow-y-hidden bg-[#0a0a0a] md:h-screen">
+      <header className="shrink-0 border-b border-white/10 px-4 py-4 sm:px-6 sm:py-8">
+        <div className="mx-auto max-w-7xl">
+          <p className="mb-1 font-mono text-xs uppercase tracking-[0.2em] text-white/40">
+            1947 — Present · scroll →
+          </p>
+          <h1 className="font-serif text-2xl text-white sm:text-4xl">
+            The Chip Map
+          </h1>
+          <p className="mt-2 hidden max-w-2xl text-sm leading-relaxed text-white/50 sm:block">
+            An interactive timeline of the inventions, companies, trade wars,
+            and policy decisions that shaped global semiconductor power.
+          </p>
+        </div>
+      </header>
+
+      <FilterBar
+        activeCategory={activeCategory}
+        activeCountry={activeCountry}
+        onCategoryChange={setActiveCategory}
+        onCountryChange={setActiveCountry}
+      />
+
+      <main className="relative min-h-0 min-w-0 flex-1 overflow-hidden">
+        {filteredEvents.length === 0 ? (
+          <p className="flex h-full items-center justify-center font-mono text-sm text-white/40">
+            No events match the current filters.
+          </p>
+        ) : (
+          <div className="timeline-scroll h-full w-full max-w-full overflow-x-auto overflow-y-hidden">
+            <div className="relative flex h-full w-max items-center py-2 pl-4 pr-8 sm:py-4 sm:pl-10 sm:pr-12">
+              <div className="pointer-events-none absolute left-4 right-8 top-1/2 h-px -translate-y-px bg-gradient-to-r from-white/5 via-white/25 to-white/5 sm:left-10 sm:right-12" />
+
+              <div className="relative flex items-center">
+                {filteredEvents.map((event, index) => (
+                  <TimelineNode
+                    key={event.id}
+                    event={event}
+                    index={index}
+                    isActive={selectedEvent?.id === event.id}
+                    onClick={setSelectedEvent}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+
+      <footer className="shrink-0 border-t border-white/10 px-4 py-3 sm:px-6 sm:py-4">
+        <div className="mx-auto max-w-7xl">
+          <p className="font-mono text-xs text-white/25">
+            Currently reading:{" "}
+            <span className="text-white/40">Chip War</span> — Chris Miller
+          </p>
+        </div>
+      </footer>
+
+      {selectedEvent && (
+        <SidePanel
+          event={selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+        />
+      )}
+    </div>
+  );
+}
