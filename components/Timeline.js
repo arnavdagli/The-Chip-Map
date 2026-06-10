@@ -31,15 +31,22 @@ export default function Timeline() {
 
   return (
     <div className="flex h-dvh max-w-[100vw] flex-col overflow-x-hidden overflow-y-hidden bg-[#0a0a0a] md:h-screen">
-      <header className="shrink-0 border-b border-white/10 px-4 py-4 sm:px-6 sm:py-8">
+      <header className="shrink-0 border-b border-white/10 px-4 py-3 sm:px-6 sm:py-5">
         <div className="mx-auto max-w-7xl">
-          <p className="mb-1 font-mono text-xs uppercase tracking-[0.2em] text-white/40">
-            1947 — Present · scroll →
-          </p>
-          <h1 className="font-serif text-2xl text-white sm:text-4xl">
-            The Chip Map
-          </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/50">
+          <div className="flex items-end justify-between gap-4">
+            <div className="min-w-0">
+              <p className="mb-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 sm:text-xs">
+                1947 — Present
+              </p>
+              <h1 className="font-serif text-xl text-white sm:text-3xl">
+                The Chip Map
+              </h1>
+            </div>
+            <p className="hidden shrink-0 font-mono text-xs text-white/30 sm:block">
+              scroll →
+            </p>
+          </div>
+          <p className="mt-1 hidden max-w-2xl text-sm leading-relaxed text-white/50 md:block">
             A curated educational timeline of semiconductor inventions,
             companies, trade disputes, and policy milestones.
           </p>
@@ -80,15 +87,11 @@ export default function Timeline() {
         )}
       </main>
 
-      <footer className="shrink-0 border-t border-white/10 px-4 py-3 sm:px-6 sm:py-4">
-        <div className="mx-auto max-w-7xl space-y-1">
-          <p className="font-mono text-xs text-white/25">
-            Educational project · curated timeline · not legal, financial, or
-            professional advice
-          </p>
-          <p className="font-mono text-xs text-white/25">
-            Inspired by{" "}
-            <span className="text-white/40">Chip War</span> — Chris Miller
+      <footer className="shrink-0 border-t border-white/10 px-4 py-2 sm:px-6">
+        <div className="mx-auto max-w-7xl">
+          <p className="font-mono text-[10px] leading-relaxed text-white/25 sm:text-xs">
+            Educational project · not legal or professional advice · inspired by{" "}
+            <span className="text-white/40">Chip War</span>
           </p>
         </div>
       </footer>
