@@ -1,10 +1,10 @@
 # The Chip Map
 
+> **Personal learning project — not maintained, not for commercial use.**
+
 An interactive, AI-assisted timeline of semiconductor history and geopolitics — from the invention of the transistor in 1947 to today's export controls and CHIPS Act fabs.
 
-**Live:** [the-chip-map.vercel.app](https://the-chip-map.vercel.app)
-
-Inspired by *Chip War* by Chris Miller.
+Inspired by *Chip War* by Chris Miller. Run locally — there is no public deployment.
 
 ## Features
 
@@ -23,7 +23,7 @@ Inspired by *Chip War* by Chris Miller.
 | UI | React 19, Tailwind CSS |
 | AI | Groq API — Llama 3.3 70B, streamed responses |
 | Data | Curated JSON, served statically |
-| Hosting | Vercel |
+| Hosting | Local dev (Vercel optional) |
 
 ## Architecture & Security
 
@@ -31,7 +31,7 @@ The AI endpoints are designed so the API key can't be hijacked as a general-purp
 
 - **Server-side event lookup** — clients send only an event `id`; all prompt content is resolved from `data/events.json` on the server
 - **Message sanitization** — only `user`/`assistant` roles pass through, with strict caps on message count and length
-- **Per-IP rate limiting** — in-app limiter on every AI route, backed by Vercel WAF rules in production
+- **Per-IP rate limiting** — in-app limiter on every AI route (optional Vercel WAF rules if deployed)
 - **Grounded prompts** — the model is instructed to answer only from the curated timeline and to say so when it can't
 
 ## Getting Started
@@ -65,11 +65,9 @@ lib/
   apiGuards.js   Rate limiting + message sanitization
 ```
 
-## Deploy
+## Deploy (optional)
 
-1. Push to GitHub and import the repo on [Vercel](https://vercel.com)
-2. Set `GROQ_API_KEY` in the project's environment variables
-3. (Recommended) Enable **Bot Protection** and a rate-limit rule on `/api/` in the Vercel Firewall tab
+To run your own instance: import the repo on [Vercel](https://vercel.com), set `GROQ_API_KEY`, and enable **Bot Protection** plus a rate-limit rule on `/api/` in the Firewall tab.
 
 ## Disclaimer
 
